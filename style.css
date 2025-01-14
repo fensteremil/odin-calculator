@@ -30,6 +30,7 @@ html {
 
 #calc-previous, #calc-display {
     flex-basis: 100%;
+    min-height: 24px;
 
     text-align: right;
 }
@@ -40,7 +41,6 @@ html {
 
 #calc-display {
     margin: 8px 16px;
-    min-height: 24px;
 
     font-size: 32px;
     font-weight: 800;
@@ -85,7 +85,7 @@ button:hover {
     cursor: pointer;
 }
 
-button.operator, #calc-previous .operator {
+button.operator, button.equals, #calc-previous .operator {
     color: #cf3812;
     font-weight: 600;
 }

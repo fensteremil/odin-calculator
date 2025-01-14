@@ -6,18 +6,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator</title>
     <script src="./calculator.js" defer></script>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
     <div id="calc-container">
         <p id="warning" class="hidden">Dummy warning text here!</p>
         <div id="calc-previous">
-            <span class="number"> </span>
-            <span class="operator"> </span>
-            <span class="number"> </span>
+            <span class="number1"></span>
+            <span class="operator"></span>
+            <span class="number2"></span>
         </div>
-        <div id="calc-display"> </div>
+        <div id="calc-display"></div>
         <div id="calc-numpad">
             <div class="flex-break"></div>
             <button class="clear" type="submit">AC</button>
@@ -36,7 +36,7 @@
             <button class="operator subtract" type="submit">&minus;</button>
             <button class="number" type="submit">.</button>
             <button class="number" type="submit">0</button>
-            <button class="operator equals" type="submit">&equals;</button>
+            <button class="equals" type="submit">&equals;</button>
             <button class="operator add" type="submit">&plus;</button>
         </div>
     </div>
