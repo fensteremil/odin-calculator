@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <script src="./calculator.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="calc-container">
+        <div class="calc-section headline">
+            <h1>Calculator</h1>
+            <!-- <p class="instruction">Press any of the buttons to start your calculation.</p> -->
+            <p id="warning" class="hidden">Dummy warning text here!</p>
+        </div>
+        <div class="calc-section result">
+            <div id="display"> </div>
+            <button class="delete" type="submit">Del</button>
+            <button class="clear" type="submit">C</button>
+        </div>
+        <div class="calc-section numpad">
+            <button class="number" type="submit">1</button>
+            <button class="number" type="submit">2</button>
+            <button class="number" type="submit">3</button>
+            <button class="number" type="submit">4</button>
+            <button class="number" type="submit">5</button>
+            <button class="number" type="submit">6</button>
+            <button class="number" type="submit">7</button>
+            <button class="number" type="submit">8</button>
+            <button class="number" type="submit">9</button>
+            <button class="number" type="submit">0</button>
+            <button class="number" type="submit">.</button>
+            <button class="equals" type="submit">=</button>
+        </div>
+        <div class="calc-section operators">
+            <button class="operator add" type="submit">+</button>
+            <button class="operator subtract" type="submit">-</button>
+            <button class="operator multiply" type="submit">*</button>
+            <button class="operator divide" type="submit">/</button>
+        </div>
+    </div>
+</body>
+</html>

@@ -37,11 +37,9 @@ function operate(operator, num1, num2) {
 // HTML Variables
 
 let displayValue = "";
-const display = document.querySelector("#calc-display");
-const prevDisplay = document.querySelector("#calc-previous");
+const display = document.querySelector("#display");
 const warningPara = document.querySelector("#warning");
 const btnClear = document.querySelector("button.clear");
-const btnDelete = document.querySelector("button.delete");
 const btnEquals = document.querySelector("button.equals");
 const btnsNumber = [...document.querySelectorAll("button.number")];
 const btnsOperator = [...document.querySelectorAll("button.operator")];
@@ -85,7 +83,6 @@ function equalsPressed() {
 // catch (error) {
 //     alert(error);
 // }
-prevDisplay.textContent = displayValue;
 displayValue = operate(operator, +num1, +num2);
 updateDisplay();
 }

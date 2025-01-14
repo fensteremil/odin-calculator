@@ -7,6 +7,3 @@ The Odin Project: Calculator
 3. "operate" function that takes an operator and two numbers
 4. Basic HTML calculator with buttons for each digit, functions and "equals"
 5. Store Display Value
-
-## Credits
-Visuals based on "Calculator by Lucia Scott on [Dribbble](https://dribbble.com/shots/14709020-Calculator)
