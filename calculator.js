@@ -51,7 +51,7 @@ btnClear.addEventListener("click", () => {
     updateDisplay();
 }, false);
 
-btnEquals.addEventListener("click", () => { equalsPressed(); }, false);
+btnEquals.addEventListener("click", equalsPressed, false);
 
 for (let index = 0; index < btnsNumber.length; index++) {
     btnsNumber[index].addEventListener("click", (e) => {
@@ -76,7 +76,9 @@ function updateDisplay() {
 function equalsPressed() {
 
     // try {
-    let [num1, operator, num2] = displayValue.split(/([+\-\*/])+/g);
+    const [num1, operator, num2] = String(displayValue).split(/([+\-\*/])+/g);
+    console.log(num2 == undefined || num2 == NaN);
+    console.log(num2);
 // }
 // catch (error) {
 //     alert(error);
