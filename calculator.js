@@ -1,3 +1,32 @@
+// HTML Variables
+
+let displayValue = "";
+let num1 = "";
+let num2 = "";
+let operator = "";
+
+const unicodes = {
+    divide: "0x00F7", 
+    multiply: "0x00D7", 
+    add: "0x002B", 
+    subtract: "0x2212"
+}
+
+const display = document.querySelector("#calc-display");
+const prevDisplay = document.querySelector("#calc-previous");
+
+const warning = document.querySelector("#warning");
+
+const btnsNumber = [...document.querySelectorAll("button.number")];
+const btnClear = document.querySelector("button#clear");
+const btnDelete = document.querySelector("button#delete");
+// const btnDiv = document.querySelector("button#divide");
+// const btnMult = document.querySelector("button#multiply");
+// const btnSub = document.querySelector("button#subtract");
+// const btnAdd = document.querySelector("button#add");
+const btnEquals = document.querySelector("button#equals");
+const btnsOperator = [...document.querySelectorAll("button.operator")];
+
 // Basic Operations
 
 function add(a, b) {
@@ -36,76 +65,101 @@ function operate(num1, operator, num2) {
             break;
     }
     
-    if (isFinite(displayValue) && displayValue != null) {
-        updateDisplay();
-        updatePrevDisplay(num1, operator, num2);
+    if (!isFinite(displayValue)) {
+        showWarning(false, "Oh, trying to divide by zero, are we?");
+    } else if (displayValue == null) {
+        showWarning(false, "Please enter a valid number first.");
     } else {
+        updatePrevDisplay(num1, operator, num2);
+        updateDisplay();
         console.log(displayValue);
     }
 }
 
-// HTML Variables
-
-let displayValue = "";
-const display = document.querySelector("#calc-display");
-const prevDisplay = document.querySelector("#calc-previous");
-const warningPara = document.querySelector("#warning");
-const btnClear = document.querySelector("button.clear");
-const btnDelete = document.querySelector("button.delete");
-const btnEquals = document.querySelector("button.equals");
-const btnsNumber = [...document.querySelectorAll("button.number")];
-const btnsOperator = [...document.querySelectorAll("button.operator")];
-
 // Event Listeners
 
 for (let index = 0; index < btnsNumber.length; index++) {
-    btnsNumber[index].addEventListener("click", (e) => {
-        displayValue += String(btnsNumber[index].textContent);
+    btnsNumber[index].addEventListener("click", function() {
+        if (String(operator).length === 0) {
+            num1 += String(btnsNumber[index].textContent);
+        }
+        else {
+            num2 += String(btnsNumber[index].textContent);
+        }
+
+        // displayValue += String(btnsNumber[index].textContent);
         updateDisplay();
-    }, false);
+    });
 }
 
 for (let index = 0; index < btnsOperator.length; index++) {
-    btnsOperator[index].addEventListener("click", (e) => {
-        if (displayValue == "") {
-            if (btnsOperator[index].textContent == "−") {
-                displayValue += "-";
-            } else {
-                showWarning(false, "Please choose a number first.");
-            }
-        } else if (splitDisplayString[1] != null) {
-            console.log("alert");
-            let [num1, operator, num2] = splitDisplayString();
-            operate(num1, operator, num2);
-            displayValue += String(btnsOperator[index].textContent);
+    btnsOperator[index].addEventListener("click", function() {
+        if (operator.length === 0) {
+            operator = btnsOperator[index].id;
+            updateDisplay();
         }
-        else {
-            displayValue += String(btnsOperator[index].textContent);
-        }
-
-        updateDisplay();
-
-    }, false);
+    });
 }
 
-btnClear.addEventListener("click", () => {
+// btnDiv.addEventListener("click", function() {
+//     operator = "divide";
+//     updateDisplay();
+//     // if another operator is already there, calculate and add next to result
+// });
+
+// for (let index = 0; index < btnsOperator.length; index++) {
+//     btnsOperator[index].addEventListener("click", function() {
+//         if (displayValue == undefined) {
+//             if (btnsOperator[index].textContent == "−") {
+//                 displayValue += "-";
+//             } else {
+//                 showWarning(false, "Please choose a number first.");
+//             }
+//         } else if (splitDisplayString[1] != null) {
+//             console.log("alert");
+//             let [num1, operator, num2] = splitDisplayString();
+//             operate(num1, operator, num2);
+//             displayValue += String(btnsOperator[index].textContent);
+//         }
+//         else {
+//             displayValue += String(btnsOperator[index].textContent);
+//         }
+
+//         updateDisplay();
+
+//     });
+// }
+
+btnClear.addEventListener("click", function() {
     showWarning(true);
     display.textContent = prevDisplay.textContent = displayValue = "";
-}, false);
+});
 
-btnEquals.addEventListener("click", () => {
+btnDelete.addEventListener("click", function() {
+    console.log(displayValue);
+    displayValue = displayValue.slice(0, -1);
+    updateDisplay();
+});
+
+btnEquals.addEventListener("click", function() {
     let [num1, operator, num2] = splitDisplayString();
     operate(num1, operator, num2);
-}, false);
+});
 
 // Display Updates
 
 function splitDisplayString() {
-    return [num1, operator, num2] = (displayValue.split(/([^\d\w\s\-\.])/));
+    try {
+        return [num1, operator, num2] = (displayValue.split(/([^\d\w\s\-\.])/));
+    } catch (error) {
+        showWarning(false, "Please submit a valid term.");
+        return null;
+    }
 }
 
 function updateDisplay() {
-    display.textContent = displayValue;
+    operator.length === 0 ? display.textContent = num1 : 
+        display.textContent = num1 + String.fromCharCode(unicodes[operator]) + num2;
 }
 
 function updatePrevDisplay(value1, operator, value2) {
@@ -119,8 +173,8 @@ function updatePrevDisplay(value1, operator, value2) {
 // Assisting Functions
 
 function showWarning(remove = false, text = "") {
-    warningPara.classList.toggle("hidden", remove);
-    warningPara.textContent = text;
+    warning.classList.toggle("hidden", remove);
+    warning.textContent = text;
 }
 
 // function updateDisplay() {

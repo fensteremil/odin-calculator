@@ -85,12 +85,12 @@ button:hover {
     cursor: pointer;
 }
 
-button.operator, button.equals, #calc-previous .operator {
+.operator {
     color: #cf3812;
     font-weight: 600;
 }
 
-button.clear, button.delete {
+.remover{
     color: #12b1bd;
     font-weight: 600;
 }
