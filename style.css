@@ -30,20 +30,23 @@ html {
 
 #calc-previous, #calc-display {
     flex-basis: 100%;
-    min-height: 24px;
 
+    overflow-wrap: break-word;
     text-align: right;
 }
 
 #calc-previous {
-    margin: 64px 16px 8px 16px;
+    margin: 32px 16px 8px 16px;
+    min-height: 24px;
 }
 
 #calc-display {
     margin: 8px 16px;
+    min-height: 32px;
 
     font-size: 32px;
     font-weight: 800;
+    line-height: 32px;
 }
 
 p#warning {
@@ -85,9 +88,15 @@ button:hover {
     cursor: pointer;
 }
 
-.operator {
+/* others & helpers */
+
+.operator, button#equals {
     color: #cf3812;
     font-weight: 600;
+}
+
+span.operator {
+    padding: 0 4px;
 }
 
 .remover{
@@ -99,8 +108,6 @@ div.flex-break {
     margin: 0;
     flex: 0 0 45%;
 }
-
-/* others & helpers */
 
 .hidden {
     display: none;

@@ -20,63 +20,76 @@ const warning = document.querySelector("#warning");
 const btnsNumber = [...document.querySelectorAll("button.number")];
 const btnClear = document.querySelector("button#clear");
 const btnDelete = document.querySelector("button#delete");
-// const btnDiv = document.querySelector("button#divide");
-// const btnMult = document.querySelector("button#multiply");
-// const btnSub = document.querySelector("button#subtract");
-// const btnAdd = document.querySelector("button#add");
 const btnEquals = document.querySelector("button#equals");
 const btnsOperator = [...document.querySelectorAll("button.operator")];
 
-// Basic Operations
+// Basic Operation
 
-function add(a, b) {
-    return +a + +b;
-}
-
-function subtract(a, b) {
-    return a - b;
-}
-
-function multiply(a, b) {
-    return a * b;
-}
-
-function divide(a, b) {
-    return Math.round(((a / b) * 100)) / 100;
-}
-
-function operate(num1, operator, num2) {
-    switch (operator) {
-        case "÷":
-            displayValue = divide(num1, num2);
-            break;
-        case "×":
-            displayValue = multiply(num1, num2);
-            break;
-        case "−":
-            displayValue = subtract(num1, num2);
-            break;
-        case "+":
-            displayValue = add(num1, num2);
-            break;
-        default:
-            showWarning(false, "Please select an operator.");
-            // clear everything?
-            break;
+const operations = {
+    add: function(a, b) {
+        return +a + +b;
+    }, 
+    subtract: function(a, b) {
+        return a - b;
+    }, 
+    multiply: function(a, b) {
+        return a * b;
+    }, 
+    divide: function(a, b) {
+        return a / b;
     }
-    
-    if (!isFinite(displayValue)) {
-        showWarning(false, "Oh, trying to divide by zero, are we?");
-    } else if (displayValue == null) {
-        showWarning(false, "Please enter a valid number first.");
+}
+
+function operate(numA, op, numB, additionalOp = "") {
+    if (numA.length === 0) {
+        showWarning(true, "Please enter a number first.");
+    } else if (operator.length === 0) {
+        showWarning(true, "Please choose an operator first.");
+    } else if (numB.length === 0) {
+        showWarning(true, "Please enter a second number first.");
     } else {
-        updatePrevDisplay(num1, operator, num2);
-        updateDisplay();
-        console.log(displayValue);
+        // only go here if all three parameters are given
+        let result = operations[op](numA, numB);
+
+        if (!isFinite(result)) {
+            showWarning(true, "Oh, trying to divide by zero, are we?");
+        } else if (result == null) {
+            showWarning(true, "Please enter a valid number first.");
+        } else {
+            // store previous calculation and reset values
+            updatePrevDisplay();
+            num1 = Math.round(result * 100) / 100;
+            num2 = "";
+
+            // also check if an additional operator has already been chosen
+            additionalOp.length != 0 ? operator = additionalOp : operator = "";
+            updateDisplay();
+}
     }
 }
 
 // Event Listeners
+
+btnClear.addEventListener("click", function() {
+    showWarning(false);
+
+    resetVariables();
+    resetDisplays();
+});
+
+btnDelete.addEventListener("click", function() {
+    showWarning(false);
+
+    if (num2.length != 0) {
+        num2 = String(num2).slice(0, -1);
+    } else if (operator.length != 0) {
+        operator = "";
+    } else {
+        num1 = String(num1).slice(0, -1);
+    }
+
+    updateDisplay();
+});
 
 for (let index = 0; index < btnsNumber.length; index++) {
     btnsNumber[index].addEventListener("click", function() {
@@ -86,127 +99,79 @@ for (let index = 0; index < btnsNumber.length; index++) {
         else {
             num2 += String(btnsNumber[index].textContent);
         }
-
-        // displayValue += String(btnsNumber[index].textContent);
+        
         updateDisplay();
     });
 }
 
 for (let index = 0; index < btnsOperator.length; index++) {
-    btnsOperator[index].addEventListener("click", function() {
+    btnsOperator[index].addEventListener("click", function () {
         if (operator.length === 0) {
-            operator = btnsOperator[index].id;
+            if (num1.length === 0 && btnsOperator[index].id === "subtract") {
+                // add a minus in front of the first number in case it is negative
+                num1 += "-";
+            } else if (num1 === "-") {
+                // remove if user tries to add two minuses
+                num1 = "";
+            } else {
+                operator = btnsOperator[index].id;
+            }
             updateDisplay();
+        } else if (num2.length === 0) {
+            if (operator.length != 0 && btnsOperator[index].id === "subtract") {
+                // invert operator in case the second number is negative
+                if (operator === "subtract") {
+                    operator = "add";
+                } else if (operator === "add") {
+                    operator = "subtract";
+                } else {
+                    num2 += "-";
+                }
+                updateDisplay();
+            } else {
+                showWarning(true, "Please only use one operator at a time.");
+            }
+        } else if (num2 === "-") {
+            // remove if user tries to add two minuses
+            num2 = "";
+            updateDisplay();
+        } else {
+            operate(num1, operator, num2, btnsOperator[index].id);
         }
     });
 }
 
-// btnDiv.addEventListener("click", function() {
-//     operator = "divide";
-//     updateDisplay();
-//     // if another operator is already there, calculate and add next to result
-// });
-
-// for (let index = 0; index < btnsOperator.length; index++) {
-//     btnsOperator[index].addEventListener("click", function() {
-//         if (displayValue == undefined) {
-//             if (btnsOperator[index].textContent == "−") {
-//                 displayValue += "-";
-//             } else {
-//                 showWarning(false, "Please choose a number first.");
-//             }
-//         } else if (splitDisplayString[1] != null) {
-//             console.log("alert");
-//             let [num1, operator, num2] = splitDisplayString();
-//             operate(num1, operator, num2);
-//             displayValue += String(btnsOperator[index].textContent);
-//         }
-//         else {
-//             displayValue += String(btnsOperator[index].textContent);
-//         }
-
-//         updateDisplay();
-
-//     });
-// }
-
-btnClear.addEventListener("click", function() {
-    showWarning(true);
-    display.textContent = prevDisplay.textContent = displayValue = "";
-});
-
-btnDelete.addEventListener("click", function() {
-    console.log(displayValue);
-    displayValue = displayValue.slice(0, -1);
-    updateDisplay();
-});
-
 btnEquals.addEventListener("click", function() {
-    let [num1, operator, num2] = splitDisplayString();
     operate(num1, operator, num2);
 });
 
 // Display Updates
 
-function splitDisplayString() {
-    try {
-        return [num1, operator, num2] = (displayValue.split(/([^\d\w\s\-\.])/));
-    } catch (error) {
-        showWarning(false, "Please submit a valid term.");
-        return null;
+function updateDisplay() {
+    showWarning(false);
+
+    if (operator.length === 0) {
+        display.innerHTML = num1;
+    } else {
+        display.innerHTML = num1 + `<span class="operator">${String.fromCharCode(unicodes[operator])}</span>` + num2;
     }
 }
 
-function updateDisplay() {
-    operator.length === 0 ? display.textContent = num1 : 
-        display.textContent = num1 + String.fromCharCode(unicodes[operator]) + num2;
+function updatePrevDisplay() {
+    prevDisplay.innerHTML = num1 + `<span class="operator">${String.fromCharCode(unicodes[operator])}</span>` + num2;
 }
-
-function updatePrevDisplay(value1, operator, value2) {
-    prevDisplay.querySelector(".number1").textContent = String(value1);
-    prevDisplay.querySelector(".operator").textContent = operator;
-    prevDisplay.querySelector(".number2").textContent = String(value2);
-}
-
-// btnEquals.addEventListener("click", equalsPressed, false);
 
 // Assisting Functions
 
-function showWarning(remove = false, text = "") {
-    warning.classList.toggle("hidden", remove);
-    warning.textContent = text;
+function resetVariables() {
+    num1 = num2 = operator = "";
 }
 
-// function updateDisplay() {
-//     display.textContent = displayValue;
-// }
+function resetDisplays() {
+    display.innerHTML = prevDisplay.innerHTML = "";
+}
 
-// function equalsPressed() {
-
-//     // try {
-//     const [num1, operator, num2] = String(displayValue).split(/([+\-\*/])+/g);
-//     console.log(num2 == undefined || num2 == NaN);
-//     console.log(num2);
-// // }
-// // catch (error) {
-// //     alert(error);
-// // }
-// prevDisplay.textContent = displayValue;
-// displayValue = operate(operator, +num1, +num2);
-// updateDisplay();
-// }
-
-// press number, add to display string
-// until operator is pressed
-// then first number and operator get saved
-// if another number gets added, add this to display string
-
-// number or operator or clear or . input
-// display update
-// DONE
-
-// equals input
-// success or error
-// do have at least 3 components
-// do not divide by zero
-// else show warning
+function showWarning(showWarning, text = "") {
+    warning.classList.toggle("hidden", !showWarning);
+    warning.textContent = text;
+}

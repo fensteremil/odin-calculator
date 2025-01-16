@@ -11,13 +11,9 @@
 
 <body>
     <div id="calc-container">
+        <div id="calc-previous"></div>
+        <div id="calc-display"></div>        
         <p id="warning" class="hidden">Dummy warning text here!</p>
-        <div id="calc-previous">
-            <span class="number1"></span>
-            <span class="operator"></span>
-            <span class="number2"></span>
-        </div>
-        <div id="calc-display"></div>
         <div id="calc-numpad">
             <div class="flex-break"></div>
             <button id="clear" class="remover" type="submit">AC</button>
@@ -36,7 +32,7 @@
             <button id="subtract" class="operator" type="submit">&minus;</button>
             <button class="number" type="submit">.</button>
             <button class="number" type="submit">0</button>
-            <button id="equals" class="operator" type="submit">&equals;</button>
+            <button id="equals" type="submit">&equals;</button>
             <button id="add" class="operator" type="submit">&plus;</button>
         </div>
     </div>
