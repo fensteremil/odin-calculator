@@ -107,16 +107,22 @@ for (let index = 0; index < btnsNumber.length; index++) {
 for (let index = 0; index < btnsOperator.length; index++) {
     btnsOperator[index].addEventListener("click", function () {
         if (operator.length === 0) {
-            if (num1.length === 0 && btnsOperator[index].id === "subtract") {
-                // add a minus in front of the first number in case it is negative
-                num1 += "-";
+            if (num1.length === 0) {
+                if (btnsOperator[index].id === "subtract") {
+                    // add a minus in front of the first number in case it is negative
+                    num1 += "-";
+                    updateDisplay();
+                } else {
+                    showWarning(true, "Please enter a number first.");
+                }
             } else if (num1 === "-") {
                 // remove if user tries to add two minuses
                 num1 = "";
+                updateDisplay();
             } else {
                 operator = btnsOperator[index].id;
+                updateDisplay();
             }
-            updateDisplay();
         } else if (num2.length === 0) {
             if (operator.length != 0 && btnsOperator[index].id === "subtract") {
                 // invert operator in case the second number is negative
